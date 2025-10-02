@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sakshi Weds Dhaval | An Enchanted Union</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Poppins:wght@300;400;500&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #FBF6F0;
+            --text-color: #5C3D2E;
+            --gold-color: #B08968;
+            --maroon-color: #9C6644;
+            --card-bg: rgba(255, 255, 255, 0.4);
+            --rose-petal-color: rgba(220, 100, 120, 0.8);
+        }
+
+        /* --- Base & Fonts --- */
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background: linear-gradient(175deg, #FBF6F0 0%, #F5EBE0 100%);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        #main-content { display: none; }
+        .font-cormorant { font-family: 'Cormorant Garamond', serif; }
+        .font-hindi { font-family: 'Tiro Devanagari Hindi', serif; }
+        .text-gold { color: var(--gold-color); }
+        .text-maroon { color: var(--maroon-color); }
+        
+        /* --- Canvases for Background Effects --- */
+        #particle-canvas, #rose-petal-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none; /* Crucial for interaction */
+        }
+        #particle-canvas { opacity: 0.7; z-index: 1; }
+        #rose-petal-canvas { z-index: 2; }
+        
+        /* --- Cover Screen & Animations --- */
+        #cover-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg-color);
+            z-index: 1000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #cover-screen.fade-out { opacity: 0; pointer-events: none; }
+        
+        @keyframes gentle-beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .beating-heart { animation: gentle-beat 2.5s ease-in-out infinite; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translate3d(0, 40px, 0); }
+            to { opacity: 1; transform: translate3d(0, 0, 0); }
+        }
+        .fade-in-up { animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        
+        /* --- Romantic Button Shine Effect --- */
+        .action-button {
+            border: 1px solid var(--gold-color); color: var(--gold-color);
+            transition: all 0.4s ease;
+            position: relative; overflow: hidden;
+            z-index: 1;
+        }
+        .action-button:hover {
+            background-color: var(--gold-color); color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(176, 137, 104, 0.4);
+        }
+        .action-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .action-button:hover::after {
+            left: 150%;
+        }
+
+        /* --- Cards & Interactive Elements --- */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(176, 137, 104, 0.15);
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px rgba(92, 61, 46, 0.05);
+            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .card:hover {
+             transform: perspective(1200px) translateY(-10px) rotateX(3deg) scale(1.02);
+             box-shadow: 0 25px 50px rgba(92, 61, 46, 0.15);
+        }
+        
+        /* Romantic Glow on Names */
+        @keyframes text-glow {
+            0%, 100% { text-shadow: 0 0 8px rgba(176, 137, 104, 0.4), 0 0 16px rgba(176, 137, 104, 0.2); }
+            50% { text-shadow: 0 0 16px rgba(176, 137, 104, 0.6), 0 0 32px rgba(176, 137, 104, 0.3); }
+        }
+        .name-glow {
+            animation: text-glow 4s ease-in-out infinite;
+        }
+
+        /* --- Scroll Animations --- */
+        .animated-element {
+            opacity: 0; transform: translateY(50px);
+            transition: opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1), transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .animated-element.is-visible { opacity: 1; transform: translateY(0); }
+
+        .animated-child {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1), transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .is-visible .animated-child { opacity: 1; transform: translateY(0); }
+        
+        /* --- Dividers & Timeline --- */
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 5px var(--gold-color); }
+            50% { text-shadow: 0 0 15px var(--gold-color); }
+        }
+        .floral-divider {
+            height: 1.5px; width: 80%;
+            background: linear-gradient(to right, transparent, var(--gold-color), transparent);
+            position: relative; margin: 2.5rem auto;
+        }
+        .floral-divider::before {
+            content: 'ॐ'; position: absolute; left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-color); /* Updated for better blending */
+            padding: 0 15px; color: var(--gold-color);
+            font-size: 1.5rem; font-family: 'Tiro Devanagari Hindi', serif;
+            animation: glow 3s infinite ease-in-out;
+        }
+        
+        .timeline-item { position: relative; padding-bottom: 3rem; padding-left: 3rem; }
+        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-item::before { content: ''; position: absolute; left: 12px; top: 12px; width: 2px; height: 100%; background-image: linear-gradient(to bottom, var(--gold-color), var(--maroon-color), transparent); }
+        .timeline-icon {
+            position: absolute; left: 0; top: 0; width: 26px; height: 26px;
+            border-radius: 50%; background-color: var(--gold-color);
+            box-shadow: 0 0 20px rgba(176, 137, 104, 0.8);
+            display: flex; align-items: center; justify-content: center;
+            color: white; transform: scale(1);
+            transition: transform 0.3s ease;
+        }
+        .timeline-item:hover .timeline-icon { transform: scale(1.2); }
+
+        /* --- Music Button --- */
+        #music-btn {
+            position: fixed; bottom: 20px; right: 20px; z-index: 999;
+            background-color: var(--maroon-color); color: white; border: none;
+            width: 50px; height: 50px; border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease; opacity: 0;
+        }
+        #music-btn:hover { transform: scale(1.1); background-color: var(--gold-color); }
+        
+        @keyframes pulse-icon {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+        .is-playing { animation: pulse-icon 1.5s infinite ease-in-out; }
+
+        /* --- Countdown Timer Animation --- */
+        .countdown-flipper {
+            display: inline-block;
+            animation: flip-down 0.5s ease-in-out;
+        }
+        @keyframes flip-down {
+            0% { transform: perspective(100px) rotateX(0deg); opacity: 1; }
+            50% { transform: perspective(100px) rotateX(-90deg); opacity: 0; }
+            51% { opacity: 0; transform: perspective(100px) rotateX(90deg); }
+            100% { transform: perspective(100px) rotateX(0deg); opacity: 1; }
+        }
+        
+        /* --- Mouse Parallax Effect --- */
+        .parallax-effect {
+            transition: transform 0.1s linear;
+        }
+        
+        /* --- Toast Notification --- */
+        #toast {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--maroon-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 3000;
+        }
+        #toast.show {
+            bottom: 30px;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100">
+    <canvas id="particle-canvas"></canvas>
+    <canvas id="rose-petal-canvas"></canvas>
+
+    <div id="cover-screen">
+        <div class="text-center p-8">
+            <svg class="w-24 h-24 mx-auto text-gold beating-heart" viewBox="0 0 24 24" stroke="currentColor" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round">
+                <defs>
+                    <linearGradient id="heartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#B08968;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <path fill="url(#heartGradient)" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+            </svg>
+            <p class="font-cormorant text-2xl mt-4 fade-in-up" style="animation-delay: 0.2s;">The Wedding Of</p>
+            <h1 class="font-cormorant text-7xl sm:text-8xl font-bold my-4 text-maroon fade-in-up" style="animation-delay: 0.4s;">Sakshi & Dhaval</h1>
+            <button id="open-invitation" class="action-button mt-8 px-8 py-3 font-semibold rounded-full shadow-lg fade-in-up" style="animation-delay: 0.6s;">
+                <i class="fas fa-envelope-open mr-2"></i> Open Invitation
+            </button>
+        </div>
+    </div>
+    
+    <div id="main-content" class="relative z-10">
+        <audio id="bg-music" loop><source src="https://cdnsongs.com/music/data/Hindi/201609/Sanam_Re/128/Din_Shagna_Da.mp3" type="audio/mpeg"></audio>
+        <button id="music-btn"><i class="fas fa-volume-mute"></i></button>
+
+        <div class="container mx-auto max-w-4xl p-4 sm:p-8">
+            <header class="text-center pt-16 pb-12 overflow-hidden animated-element parallax-effect" data-parallax-strength="20">
+                 <p class="font-hindi text-lg text-gold">॥ श्री गणेशाय नमः ॥</p>
+                 <p class="text-2xl leading-relaxed font-cormorant mt-6">Together with the blessings of their families</p>
+                 <div class="my-12 parallax-effect" data-parallax-strength="30">
+                     <h1 class="font-cormorant text-7xl sm:text-8xl font-bold my-4 text-maroon name-glow">Sakshi</h1>
+                     <p class="font-cormorant text-4xl my-4 text-gold">&</p>
+                     <h1 class="font-cormorant text-7xl sm:text-8xl font-bold my-4 text-maroon name-glow">Dhaval</h1>
+                 </div>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm"><div class="opacity-90"><p class="font-semibold text-gold">Daughter of</p><p>Smt. Kiran Singh & Sh. Raj Kumar Singh</p></div><div class="opacity-90"><p class="font-semibold text-gold">Son of</p><p>Smt. Kailash Ben & Sh. Kannu Bhai</p></div></div>
+            </header>
+
+            <section class="animated-element">
+                <div class="card p-8 sm:p-12 parallax-effect" data-parallax-strength="-15">
+                     <h2 class="font-cormorant text-center text-4xl font-bold text-maroon">Save The Date</h2>
+                     <div class="my-8 text-center">
+                         <h3 class="font-cormorant text-3xl font-bold">Saturday, 01 November 2025</h3>
+                         <div class="mt-4 text-lg"><p class="font-semibold">Community Center, Sector 122 Noida</p><p>Parthala Khangerpur, Near CNG Pump, Uttar Pradesh</p><a href="https://www.google.com/maps/search/?api=1&query=Community+Center,Parthala+Khangerpur,Sector+122+Noida" target="_blank" class="inline-block mt-6 px-6 py-2 text-sm rounded-full action-button">View on Map</a></div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="animated-element text-center mt-12">
+                <h3 class="font-cormorant text-2xl font-bold text-maroon mb-6">Join Us & Share The Joy</h3>
+                <div class="flex justify-center items-center gap-4 flex-wrap">
+                    <button id="add-to-calendar" class="action-button px-6 py-3 rounded-full text-sm font-semibold">
+                        <i class="fas fa-calendar-plus mr-2"></i>Add to Calendar
+                    </button>
+                    <a href="whatsapp://send?text=We're%20getting%20married!%20Join%20us%20to%20celebrate%20the%20wedding%20of%20Sakshi%20%26%20Dhaval.%20View%20the%20invitation:%20" id="whatsapp-share" class="action-button px-6 py-3 rounded-full text-sm font-semibold" data-action="share/whatsapp/share" target="_blank">
+                        <i class="fab fa-whatsapp mr-2"></i>Share on WhatsApp
+                    </a>
+                    <button id="copy-link" class="action-button px-6 py-3 rounded-full text-sm font-semibold">
+                        <i class="fas fa-link mr-2"></i>Copy Link
+                    </button>
+                </div>
+            </section>
+            
+            <section class="text-center p-8 mt-16 animated-element">
+                <h2 class="font-cormorant text-4xl font-bold text-maroon">The Celebration Begins In</h2>
+                 <div id="countdown" class="flex justify-center space-x-4 sm:space-x-8 my-8 text-center">
+                     <div><div class="text-4xl sm:text-5xl font-bold text-gold" id="days">00</div><div class="text-xs uppercase tracking-widest opacity-70">Days</div></div>
+                     <div><div class="text-4xl sm:text-5xl font-bold text-gold" id="hours">00</div><div class="text-xs uppercase tracking-widest opacity-70">Hours</div></div>
+                     <div><div class="text-4xl sm:text-5xl font-bold text-gold" id="minutes">00</div><div class="text-xs uppercase tracking-widest opacity-70">Minutes</div></div>
+                     <div><div class="text-4xl sm:text-5xl font-bold text-gold" id="seconds">00</div><div class="text-xs uppercase tracking-widest opacity-70">Seconds</div></div>
+                </div>
+            </section>
+
+            <section class="card p-8 sm:p-12 mt-10 animated-element parallax-effect" data-parallax-strength="-10">
+                <h2 class="font-cormorant text-center text-5xl font-bold text-maroon">Wedding Events</h2>
+                <div class="floral-divider"></div>
+                <div class="max-w-md mx-auto mt-12">
+                    <div class="timeline-item">
+                        <div class="timeline-icon"><i class="fas fa-seedling"></i></div>
+                        <p class="text-sm text-gold">29 October 2025</p>
+                        <h3 class="font-semibold text-xl">Gheedhari Matkor</h3>
+                        <p class="text-sm opacity-80">Pre-wedding rituals ki shubh shuruat.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon"><i class="fas fa-gem"></i></div>
+                        <p class="text-sm text-gold">01 November 2025</p>
+                        <h3 class="font-semibold text-xl">Tilak Ceremony</h3>
+                        <p class="text-sm opacity-80">Radiant Blu Hotel, Sector-122 Noida</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon"><i class="fas fa-glass-cheers"></i></div>
+                        <p class="text-sm text-gold">01 November 2025</p>
+                        <h3 class="font-semibold text-xl">Welcome of Barat & Dinner</h3>
+                        <p class="text-sm opacity-80">Barat Swagat: 07:00 PM | Dinner: 08:00 PM onwards</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon"><i class="fas fa-dove"></i></div>
+                        <p class="text-sm text-gold">02 November 2025</p>
+                        <h3 class="font-semibold text-xl">Vidai</h3>
+                        <p class="text-sm opacity-80">Ek naye safar ki shuruat.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="animated-element text-center my-16">
+                <div class="inline-block relative">
+                    <svg width="150" height="150" viewBox="0 0 200 200" class="mx-auto">
+                        <circle cx="100" cy="100" r="95" stroke="var(--gold-color)" stroke-width="1.5" fill="none" stroke-dasharray="10,5"/>
+                        <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="90" fill="var(--maroon-color)" class="name-glow">
+                            S <tspan font-size="40" fill="var(--gold-color)">&</tspan> D
+                        </text>
+                    </svg>
+                </div>
+            </section>
+            
+            <section id="dialogue-section" class="card text-center p-8 sm:p-12 mt-16 animated-element">
+                <i class="fas fa-quote-left text-gold text-2xl opacity-50 block mb-4"></i>
+                <p id="hindi-dialogue" class="font-hindi text-3xl leading-relaxed my-4 font-semibold text-maroon" style="min-height: 120px;"></p>
+                <p class="font-semibold text-gold mt-4">- ओम शांति ओम</p>
+            </section>
+
+            <section id="special-invitation-section" class="card text-center p-8 sm:p-10 mt-16 animated-element">
+                <h2 class="font-cormorant text-3xl font-bold text-maroon">A Special Invitation</h2>
+                <div class="my-6">
+                    <p id="child-invitation-text" class="font-hindi text-2xl leading-relaxed font-semibold text-gold" style="min-height: 120px;"></p>
+                </div>
+                <p class="text-xl font-cormorant font-bold text-maroon">- Gauransh -</p>
+            </section>
+
+            <section class="card text-center p-8 sm:p-12 mt-16 animated-element" data-stagger-children><h2 class="font-cormorant text-5xl font-bold text-maroon">With Best Compliments</h2><p class="mt-2 opacity-80">From our loving family & friends</p><div class="floral-divider"></div><div class="text-sm sm:text-base grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-3 max-w-xl mx-auto opacity-90"><p class="animated-child">Suraj Singh</p><p class="animated-child">Ashish Singh</p><p class="animated-child">Prithav</p><p class="animated-child">Mayank</p><p class="animated-child">Atharav Singh</p><p class="animated-child">Ekaksh</p><p class="animated-child">Sh. Lalu Mahto</p><p class="animated-child">Sh. Ramkishan Mahto</p><p class="animated-child">Sh. Moti Lal Prasad</p><p class="animated-child">Sh. Deepak Singh</p><p class="animated-child">Sh. Nagender Singh</p><p class="animated-child">Sh. Raj Kumar Mahto</p><p class="animated-child">Sh. Sushil Kumar</p></div></section>
+
+            <section class="grid md:grid-cols-2 gap-10 mt-16"><div class="text-center animated-element"><h3 class="font-cormorant text-3xl font-bold text-maroon">From (Bride's Side)</h3><p class="mt-4 font-semibold text-lg">Raj Kumar Singh</p><p class="mt-2 text-sm opacity-80">H. No. 591 Ram Vatika Colony, Sorkha, Sec 115, Noida</p><p class="mt-4 text-xs font-semibold text-gold">M: 8375079101, 8383931841</p></div><div class="text-center animated-element"><h3 class="font-cormorant text-3xl font-bold text-maroon">From (Groom's Side)</h3><p class="mt-4 font-semibold text-lg">Kannu Bhai</p><p class="mt-2 text-sm opacity-80">A-104 Hari Om Nagar, Behind Shubham K Mart, Jodhpur</p><p class="mt-4 text-xs font-semibold text-gold">M: 8851666208, 8851666208</p></div></section>
+            
+            <footer class="text-center mt-24 pb-8 animated-element"><p class="font-hindi text-lg text-gold">विघ्न हरण मंगल करण, श्री गणपति महाराज ।</p><p class="font-hindi text-lg text-gold">प्रथम निमंत्रण आपको, पूरण करियो काज ॥</p></footer>
+        </div>
+    </div>
+    
+    <div id="toast">Link copied to clipboard!</div>
+
+
+    <script>
+        // --- Particle Animation ---
+        const particleCanvas = document.getElementById('particle-canvas');
+        const pCtx = particleCanvas.getContext('2d');
+        particleCanvas.width = window.innerWidth;
+        particleCanvas.height = window.innerHeight;
+        let particlesArray;
+        let mouse = { x: null, y: null, radius: (particleCanvas.height/120) * (particleCanvas.width/120) };
+        
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+
+        const particleColors = ['#B08968', '#DDB892', '#EDE0D4'];
+
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x; this.y = y; this.directionX = directionX;
+                this.directionY = directionY; this.size = size; this.color = color;
+            }
+            draw() {
+                pCtx.beginPath();
+                pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                pCtx.fillStyle = this.color;
+                pCtx.fill();
+            }
+            update() {
+                if (this.x > particleCanvas.width || this.x < 0) this.directionX = -this.directionX;
+                if (this.y > particleCanvas.height || this.y < 0) this.directionY = -this.directionY;
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx*dx + dy*dy);
+                if (distance < mouse.radius + this.size) {
+                    if (mouse.x < this.x && this.x < particleCanvas.width - this.size * 10) this.x += 3;
+                    if (mouse.x > this.x && this.x > this.size * 10) this.x -= 3;
+                    if (mouse.y < this.y && this.y < particleCanvas.height - this.size * 10) this.y += 3;
+                    if (mouse.y > this.y && this.y > this.size * 10) this.y -= 3;
+                }
+                this.x += this.directionX;
+                this.y += this.directionY;
+                this.draw();
+            }
+        }
+        function initParticles() {
+            particlesArray = [];
+            let numberOfParticles = (particleCanvas.height * particleCanvas.width) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * .4) - .2;
+                let directionY = (Math.random() * .4) - .2;
+                let color = particleColors[Math.floor(Math.random() * particleColors.length)];
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+        function animateParticles() {
+            requestAnimationFrame(animateParticles);
+            pCtx.clearRect(0,0,innerWidth, innerHeight);
+            for (let i = 0; i < particlesArray.length; i++) particlesArray[i].update();
+        }
+        
+        // --- Rose Petal Animation ---
+        const roseCanvas = document.getElementById('rose-petal-canvas');
+        const rCtx = roseCanvas.getContext('2d');
+        roseCanvas.width = window.innerWidth;
+        roseCanvas.height = window.innerHeight;
+        let petalsArray = [];
+
+        class RosePetal {
+            constructor() {
+                this.x = Math.random() * roseCanvas.width;
+                this.y = (Math.random() * roseCanvas.height * 2) - roseCanvas.height;
+                this.w = 25 + Math.random() * 15;
+                this.h = 20 + Math.random() * 10;
+                this.opacity = this.w / 40;
+                this.flip = Math.random();
+                this.xSpeed = 1.5 + Math.random() * 2;
+                this.ySpeed = 1 + Math.random() * 1;
+                this.flipSpeed = Math.random() * 0.03;
+            }
+            draw() {
+                if (this.y > roseCanvas.height || this.x > roseCanvas.width) {
+                    this.x = Math.random() * roseCanvas.width;
+                    this.y = -40;
+                }
+                rCtx.globalAlpha = this.opacity;
+                rCtx.beginPath();
+                rCtx.moveTo(this.x, this.y);
+                rCtx.bezierCurveTo(this.x - this.w / 2, this.y - this.h / 2, this.x - this.w / 2, this.y + this.h / 2, this.x, this.y + this.h);
+                rCtx.bezierCurveTo(this.x + this.w / 2, this.y + this.h / 2, this.x + this.w / 2, this.y - this.h / 2, this.x, this.y);
+                rCtx.fillStyle = `rgba(220, 100, 120, ${this.opacity})`;
+                rCtx.fill();
+            }
+            animate() {
+                this.y += this.ySpeed;
+                this.x += this.xSpeed;
+                this.flip += this.flipSpeed;
+                this.w = 25 + Math.cos(this.flip) * 10;
+                this.draw();
+            }
+        }
+
+        function initPetals() {
+            for (let i = 0; i < 35; i++) { // Increased petal count
+                petalsArray.push(new RosePetal());
+            }
+        }
+        
+        function animatePetals() {
+            rCtx.clearRect(0, 0, roseCanvas.width, roseCanvas.height);
+            petalsArray.forEach(petal => petal.animate());
+            requestAnimationFrame(animatePetals);
+        }
+
+        window.addEventListener('resize', () => {
+            particleCanvas.width = innerWidth; particleCanvas.height = innerHeight;
+            roseCanvas.width = innerWidth; roseCanvas.height = innerHeight;
+            mouse.radius = (particleCanvas.height/120) * (particleCanvas.width/120);
+            initParticles();
+            petalsArray = []; // Reset petals
+            initPetals();
+        });
+        
+        initParticles();
+        animateParticles();
+        initPetals();
+        animatePetals();
+
+        // --- Typewriter Function ---
+        function typewriter(elementId, text, callback) {
+            let i = 0;
+            const element = document.getElementById(elementId);
+            if (!element || element.textContent.length > 0) return; 
+            element.innerHTML = ""; // Use innerHTML to allow for <br> tags
+            const speed = 70; 
+
+            function type() {
+                if (i < text.length) {
+                    if (text.substring(i, i + 4) === '<br>') {
+                        element.innerHTML += '<br>';
+                        i += 4;
+                    } else {
+                        element.innerHTML += text.charAt(i);
+                        i++;
+                    }
+                    setTimeout(type, speed);
+                } else if (callback) {
+                    callback();
+                }
+            }
+            type();
+        }
+
+        // --- Setup and Event Listeners ---
+        const openButton = document.getElementById('open-invitation');
+        const coverScreen = document.getElementById('cover-screen');
+        const mainContent = document.getElementById('main-content');
+        const musicBtn = document.getElementById('music-btn');
+        const bgMusic = document.getElementById('bg-music');
+        let isPlaying = false;
+
+        openButton.addEventListener('click', () => {
+            coverScreen.classList.add('fade-out');
+            mainContent.style.display = 'block';
+            
+            bgMusic.play().then(() => {
+                isPlaying = true;
+                musicBtn.innerHTML = '<i class="fas fa-volume-high"></i>';
+                musicBtn.querySelector('i').classList.add('is-playing');
+            }).catch(e => console.log("Autoplay was prevented."));
+            
+            musicBtn.style.opacity = '1';
+            
+            const shareLink = document.getElementById('whatsapp-share');
+            shareLink.href += window.location.href;
+
+            setTimeout(() => {
+                coverScreen.style.display = 'none';
+                const animatedElements = document.querySelectorAll('.animated-element');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            if (entry.target.dataset.staggerChildren !== undefined) {
+                                const children = entry.target.querySelectorAll('.animated-child');
+                                children.forEach((child, index) => {
+                                    child.style.transitionDelay = `${index * 100}ms`;
+                                });
+                            }
+                            if (entry.target.id === 'dialogue-section') {
+                                const text = "इतनी शिद्दत से मैंने तुम्हें पाने की कोशिश की है, कि हर ज़र्रे ने मुझे तुमसे मिलाने की साज़िश की है।";
+                                typewriter('hindi-dialogue', text);
+                            }
+                            if (entry.target.id === 'special-invitation-section') {
+                                const childText = "रंग-बिरंगी रोशनी जगमगाएगी,<br>मेरी बुआ की शादी में दुनिया मुस्कुराएगी।<br>आप आना ज़रूर... वरना मेरी प्लेट खाली रह जाएगी! 😋🍛";
+                                typewriter('child-invitation-text', childText);
+                            }
+                            entry.target.classList.add('is-visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.25 });
+                animatedElements.forEach(el => observer.observe(el));
+            }, 1500);
+        });
+
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                bgMusic.pause(); 
+                musicBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+            } else {
+                bgMusic.play(); 
+                musicBtn.innerHTML = '<i class="fas fa-volume-high"></i>';
+                musicBtn.querySelector('i').classList.add('is-playing');
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // --- Countdown Timer ---
+        const countdownDate = new Date("November 1, 2025 19:00:00").getTime();
+        const countdownFunction = setInterval(() => {
+            const now = new Date().getTime(); 
+            const distance = countdownDate - now;
+            
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                document.getElementById("countdown").innerHTML = "<div class='w-full text-2xl font-cormorant'>The day is here!</div>";
+                return;
+            }
+            
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+            const updateField = (id, value) => {
+                const element = document.getElementById(id);
+                if (!element) return;
+                const currentValue = element.innerText;
+                const formattedValue = String(value).padStart(2, '0');
+                if (currentValue !== formattedValue) {
+                    element.innerHTML = `<span class="countdown-flipper">${formattedValue}</span>`;
+                }
+            };
+
+            updateField("days", d);
+            updateField("hours", h);
+            updateField("minutes", m);
+            updateField("seconds", s);
+        }, 1000);
+        
+        // --- Mouse Parallax Effect ---
+        const parallaxElements = document.querySelectorAll('.parallax-effect');
+        window.addEventListener('mousemove', (e) => {
+            const { clientX, clientY } = e;
+            const x = (clientX / window.innerWidth) - 0.5;
+            const y = (clientY / window.innerHeight) - 0.5;
+
+            parallaxElements.forEach(el => {
+                const strength = el.dataset.parallaxStrength || 20;
+                const existingTransform = el.style.transform.replace(/translate\([^)]+\)/, '').trim();
+                el.style.transform = `translate(${-x * strength}px, ${-y * strength}px) ${existingTransform}`;
+            });
+        });
+
+        // --- Add to Calendar Functionality ---
+        document.getElementById('add-to-calendar').addEventListener('click', () => {
+            const event = {
+                title: "Wedding: Sakshi & Dhaval",
+                location: "Community Center, Sector 122 Noida, Parthala Khangerpur, Near CNG Pump, Uttar Pradesh",
+                description: "Join us for the wedding celebration of Sakshi and Dhaval! View the full invitation at: " + window.location.href,
+                startTime: "20251101T133000Z",
+                endTime: "20251101T183000Z"
+            };
+            const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nURL:${document.URL}\nDTSTART:${event.startTime}\nDTEND:${event.endTime}\nSUMMARY:${event.title}\nDESCRIPTION:${event.description}\nLOCATION:${event.location}\nEND:VEVENT\nEND:VCALENDAR`;
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'sakshi-dhaval-wedding.ics';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+        
+        // --- Toast Notification ---
+        const toast = document.getElementById('toast');
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
+        // --- Copy Link Functionality ---
+        document.getElementById('copy-link').addEventListener('click', () => {
+            const dummy = document.createElement('textarea');
+            document.body.appendChild(dummy);
+            dummy.value = window.location.href;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+            showToast('Link copied to clipboard!');
+        });
+
+    </script>
+</body>
+</html>
+
