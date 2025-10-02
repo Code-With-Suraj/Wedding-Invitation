@@ -241,7 +241,7 @@
     </div>
     
     <div id="main-content" class="relative z-10">
-        <audio id="bg-music" loop><source src="https://cdnsongs.com/music/data/Hindi/201609/Sanam_Re/128/Din_Shagna_Da.mp3" type="audio/mpeg"></audio>
+        <audio id="bg-music"></audio>
         <button id="music-btn"><i class="fas fa-volume-mute"></i></button>
 
         <div class="container mx-auto max-w-4xl p-4 sm:p-8">
@@ -519,17 +519,51 @@
         const mainContent = document.getElementById('main-content');
         const musicBtn = document.getElementById('music-btn');
         const bgMusic = document.getElementById('bg-music');
+        
         let isPlaying = false;
+        const songs = [
+            'https://cdnsongs.com/music/data/Hindi/201609/Sanam_Re/128/Din_Shagna_Da.mp3',
+            'https://cdnsongs.com/music/data/Hindi/201404/2_States/128/Mast_Magan.mp3',
+            'https://cdnsongs.com/music/data/Hindi/201202/Agent_Vinod/128/Raabta.mp3',
+            'https://cdnsongs.com/music/data/Hindi/201305/Aashiqui_2/128/Tum_Hi_Ho.mp3'
+        ];
+        let currentSongIndex = 0;
+
+        function playMusic() {
+            if (bgMusic.src !== songs[currentSongIndex]) {
+                bgMusic.src = songs[currentSongIndex];
+            }
+            const playPromise = bgMusic.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    isPlaying = true;
+                    musicBtn.innerHTML = '<i class="fas fa-volume-high is-playing"></i>';
+                }).catch(error => {
+                    console.log("Playback failed:", error);
+                    isPlaying = false;
+                    musicBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                });
+            }
+        }
+
+        function pauseMusic() {
+            bgMusic.pause();
+            isPlaying = false;
+            musicBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+        }
+
+        function playNextSong() {
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            playMusic();
+        }
+
+        bgMusic.addEventListener('ended', playNextSong);
 
         openButton.addEventListener('click', () => {
             coverScreen.classList.add('fade-out');
             mainContent.style.display = 'block';
             
-            bgMusic.play().then(() => {
-                isPlaying = true;
-                musicBtn.innerHTML = '<i class="fas fa-volume-high"></i>';
-                musicBtn.querySelector('i').classList.add('is-playing');
-            }).catch(e => console.log("Autoplay was prevented."));
+            playMusic();
             
             musicBtn.style.opacity = '1';
             
@@ -567,14 +601,10 @@
 
         musicBtn.addEventListener('click', () => {
             if (isPlaying) {
-                bgMusic.pause(); 
-                musicBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                pauseMusic();
             } else {
-                bgMusic.play(); 
-                musicBtn.innerHTML = '<i class="fas fa-volume-high"></i>';
-                musicBtn.querySelector('i').classList.add('is-playing');
+                playMusic();
             }
-            isPlaying = !isPlaying;
         });
 
         // --- Countdown Timer ---
