@@ -218,9 +218,11 @@
     </style>
 </head>
 <body class="bg-gray-100">
+    <!-- Background Canvases for visual effects -->
     <canvas id="particle-canvas"></canvas>
     <canvas id="rose-petal-canvas"></canvas>
 
+    <!-- Cover Screen: The initial view before opening the invitation -->
     <div id="cover-screen">
         <div class="text-center p-8">
             <svg class="w-24 h-24 mx-auto text-gold beating-heart" viewBox="0 0 24 24" stroke="currentColor" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round">
@@ -240,11 +242,13 @@
         </div>
     </div>
     
+    <!-- Main Content: Hidden until invitation is opened -->
     <div id="main-content" class="relative z-10">
         <audio id="bg-music"></audio>
         <button id="music-btn"><i class="fas fa-volume-mute"></i></button>
 
         <div class="container mx-auto max-w-4xl p-4 sm:p-8">
+            <!-- Header Section with Names and Parents -->
             <header class="text-center pt-16 pb-12 overflow-hidden animated-element parallax-effect" data-parallax-strength="20">
                  <p class="font-hindi text-lg text-gold">॥ श्री गणेशाय नमः ॥</p>
                  <p class="text-2xl leading-relaxed font-cormorant mt-6">Together with the blessings of their families</p>
@@ -256,16 +260,19 @@
                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm"><div class="opacity-90"><p class="font-semibold text-gold">Daughter of</p><p>Smt. Kiran Singh & Sh. Raj Kumar Singh</p></div><div class="opacity-90"><p class="font-semibold text-gold">Son of</p><p>Smt. Kailash Ben & Sh. Kannu Bhai</p></div></div>
             </header>
 
+            <!-- Save The Date Section -->
             <section class="animated-element">
                 <div class="card p-8 sm:p-12 parallax-effect" data-parallax-strength="-15">
                      <h2 class="font-cormorant text-center text-4xl font-bold text-maroon">Save The Date</h2>
                      <div class="my-8 text-center">
                          <h3 class="font-cormorant text-3xl font-bold">Saturday, 01 November 2025</h3>
-                         <div class="mt-4 text-lg"><p class="font-semibold">Community Center, Sector 122 Noida</p><p>Parthala Khangerpur, Near CNG Pump, Uttar Pradesh</p><a href="https://www.google.com/maps/search/?api=1&query=Community+Center,Parthala+Khangerpur,Sector+122+Noida" target="_blank" class="inline-block mt-6 px-6 py-2 text-sm rounded-full action-button">View on Map</a></div>
+                         <div class="mt-4 text-lg"><p class="font-semibold">Community Center, Sector 122 Noida</p><p>Parthala Khangerpur, Near CNG Pump, Uttar Pradesh</p>
+                         <a href="https://maps.app.goo.gl/qpC7YQb7g8mBosKUA" target="_blank" class="inline-block mt-6 px-6 py-2 text-sm rounded-full action-button">View on Map</a></div>
                     </div>
                 </div>
             </section>
             
+            <!-- Action Buttons Section -->
             <section class="animated-element text-center mt-12">
                 <h3 class="font-cormorant text-2xl font-bold text-maroon mb-6">Join Us & Share The Joy</h3>
                 <div class="flex justify-center items-center gap-4 flex-wrap">
@@ -281,6 +288,7 @@
                 </div>
             </section>
             
+            <!-- Countdown Timer Section -->
             <section class="text-center p-8 mt-16 animated-element">
                 <h2 class="font-cormorant text-4xl font-bold text-maroon">The Celebration Begins In</h2>
                  <div id="countdown" class="flex justify-center space-x-4 sm:space-x-8 my-8 text-center">
@@ -291,6 +299,7 @@
                 </div>
             </section>
 
+            <!-- Wedding Events Timeline -->
             <section class="card p-8 sm:p-12 mt-10 animated-element parallax-effect" data-parallax-strength="-10">
                 <h2 class="font-cormorant text-center text-5xl font-bold text-maroon">Wedding Events</h2>
                 <div class="floral-divider"></div>
@@ -322,6 +331,7 @@
                 </div>
             </section>
 
+            <!-- Monogram Section -->
             <section class="animated-element text-center my-16">
                 <div class="inline-block relative">
                     <svg width="150" height="150" viewBox="0 0 200 200" class="mx-auto">
@@ -333,12 +343,14 @@
                 </div>
             </section>
             
+            <!-- Hindi Dialogue Section -->
             <section id="dialogue-section" class="card text-center p-8 sm:p-12 mt-16 animated-element">
                 <i class="fas fa-quote-left text-gold text-2xl opacity-50 block mb-4"></i>
                 <p id="hindi-dialogue" class="font-hindi text-3xl leading-relaxed my-4 font-semibold text-maroon" style="min-height: 120px;"></p>
                 <p class="font-semibold text-gold mt-4">- ओम शांति ओम</p>
             </section>
 
+            <!-- Special Invitation from Child -->
             <section id="special-invitation-section" class="card text-center p-8 sm:p-10 mt-16 animated-element">
                 <h2 class="font-cormorant text-3xl font-bold text-maroon">A Special Invitation</h2>
                 <div class="my-6">
@@ -347,6 +359,7 @@
                 <p class="text-xl font-cormorant font-bold text-maroon">- Gauransh -</p>
             </section>
 
+            <!-- Best Compliments Section -->
             <section class="card text-center p-8 sm:p-12 mt-16 animated-element" data-stagger-children>
                 <h2 class="font-cormorant text-5xl font-bold text-maroon">With Best Compliments</h2>
                 <p class="mt-2 opacity-80">From our loving family & friends</p>
@@ -378,13 +391,16 @@
                 </div>
             </section>
 
+            <!-- Address Section -->
             <section class="grid md:grid-cols-2 gap-10 mt-16"><div class="text-center animated-element"><h3 class="font-cormorant text-3xl font-bold text-maroon">From (Bride's Side)</h3><p class="mt-4 font-semibold text-lg">Raj Kumar Singh</p><p class="mt-2 text-sm opacity-80">H. No. 591 Ram Vatika Colony, Sorkha, Sec 115, Noida</p><p class="mt-4 text-xs font-semibold text-gold">M: 8375079101, 8383931841</p></div><div class="text-center animated-element"><h3 class="font-cormorant text-3xl font-bold text-maroon">From (Groom's Side)</h3><p class="mt-4 font-semibold text-lg">Kannu Bhai</p><p class="mt-2 text-sm opacity-80">A-104 Hari Om Nagar, Behind Shubham K Mart, Jodhpur</p><p class="mt-4 text-xs font-semibold text-gold"></p></div></section>
             
+            <!-- Footer with Hindi Quote -->
             <footer class="text-center mt-24 pb-8 animated-element">
                 <p class="font-hindi text-lg text-gold">विघ्न हरण मंगल करण, श्री गणपति महाराज ।</p>
                 <p class="font-hindi text-lg text-gold">प्रथम निमंत्रण आपको, पूरण करियो काज ॥</p>
             </footer>
 
+            <!-- Credits -->
             <div class="text-center mt-8 pb-8 animated-element" style="animation-delay: 200ms;">
                 <p class="text-sm opacity-75">Invitation lovingly crafted by</p>
                 <p class="font-cormorant text-xl text-maroon mt-1">Suraj Singh</p>
@@ -392,6 +408,7 @@
         </div>
     </div>
     
+    <!-- Toast Notification for "Copy Link" -->
     <div id="toast">Link copied to clipboard!</div>
 
 
@@ -558,11 +575,17 @@
         const bgMusic = document.getElementById('bg-music');
         
         let isPlaying = false;
+        
+        // --- UPDATED BOLLYWOOD SONGS LIST ---
         const songs = [
-            'https://cdnsongs.com/music/data/Hindi/201609/Sanam_Re/128/Din_Shagna_Da.mp3',
-            'https://cdnsongs.com/music/data/Hindi/201404/2_States/128/Mast_Magan.mp3',
-            'https://cdnsongs.com/music/data/Hindi/201202/Agent_Vinod/128/Raabta.mp3',
-            'https://cdnsongs.com/music/data/Hindi/201305/Aashiqui_2/128/Tum_Hi_Ho.mp3'
+            'https://cdnsongs.com/music/data/Hindi/2022/Brahmastra/128/Kesariya.mp3', // Kesariya
+            'https://cdnsongs.com/music/data/Hindi/2021/Shershaah/128/Ranjha.mp3', // Ranjha
+            'https://cdnsongs.com/music/data/Hindi/2021/Shershaah/128/Raataan_Lambiyan.mp3', // Raataan Lambiyan
+            'https://cdnsongs.com/music/data/Hindi/2013/Yeh_Jawaani_Hai_Deewani/128/Kabira_Encore.mp3', // Kabira (Encore)
+            'https://cdnsongs.com/music/data/Hindi/201609/Sanam_Re/128/Din_Shagna_Da.mp3', // Din Shagna Da
+            'https://cdnsongs.com/music/data/Hindi/201404/2_States/128/Mast_Magan.mp3', // Mast Magan
+            'https://cdnsongs.com/music/data/Hindi/2019/Kabir_Singh/128/Tera_Ban_Jaunga.mp3', // Tera Ban Jaunga
+            'https://cdnsongs.com/music/data/Hindi/2016/Airlift/128/Soch_Na_Sake.mp3' // Soch Na Sake
         ];
         let currentSongIndex = 0;
 
@@ -697,10 +720,10 @@
                 title: "Wedding: Sakshi & Dhaval",
                 location: "Community Center, Sector 122 Noida, Parthala Khangerpur, Near CNG Pump, Uttar Pradesh",
                 description: "Join us for the wedding celebration of Sakshi and Dhaval! View the full invitation at: " + window.location.href,
-                startTime: "20251101T133000Z",
-                endTime: "20251101T183000Z"
+                startTime: "20251101T133000Z", // Corresponds to 7:00 PM IST (GMT+5:30)
+                endTime: "20251101T183000Z" // Corresponds to 12:00 AM IST (GMT+5:30) next day, but keeping it simple for 5 hours.
             };
-            const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nURL:${document.URL}\nDTSTART:${event.startTime}\nDTEND:${event.endTime}\nSUMMARY:${event.title}\nDESCRIPTION:${event.description}\nLOCATION:${event.location}\nEND:VEVENT\nEND:VCALENDAR`;
+            const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nURL:${document.URL}\nDTSTART:${event.startTime}\nDTEND:${event.endTime}\nSUMMARY:${event.title}\nDESCRIPTION:${event.description}\nLOCATION:${event.location}\nEND:VEVENT\nEND:VCALNDAR`;
             const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
