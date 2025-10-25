@@ -1143,31 +1143,35 @@
         
         let isPlaying = false;
 
-        // Bollywood Romantic Song
-        const musicUrl = 'https://drive.google.com/uc?export=download&id=1fVv-oLSNB178-P1OYFl8gPa8ijH-VwCW';
+        // Bollywood Romantic Song - Fixed Google Drive Link
+        const musicUrl = 'https://docs.google.com/uc?export=download&id=1fVv-oLSNB178-P1OYFl8gPa8ijH-VwCW';
 
         function playMusic() {
             try {
-                if (!bgMusic.src) {
-                    bgMusic.src = musicUrl;
-                }
-                bgMusic.volume = 0.4;
+                bgMusic.src = musicUrl;
+                bgMusic.crossOrigin = "anonymous";
+                bgMusic.volume = 0.5;
                 bgMusic.loop = true;
+                bgMusic.load();
                 
-                bgMusic.play().then(() => {
-                    isPlaying = true;
-                    musicBtn.innerHTML = '<i class="fas fa-music is-playing"></i>';
-                    console.log("✓ Bollywood song playing!");
-                }).catch(error => {
-                    console.log("Auto-play blocked:", error.message);
-                    isPlaying = false;
-                    musicBtn.innerHTML = '<i class="fas fa-volume-xmark"></i>';
-                    // Show user they need to click to play
-                    showToast('🎵 Music button पर click करें!');
-                });
+                // Small delay before playing
+                setTimeout(() => {
+                    bgMusic.play().then(() => {
+                        isPlaying = true;
+                        musicBtn.innerHTML = '<i class="fas fa-music is-playing"></i>';
+                        console.log("✓ Bollywood song playing!");
+                        showToast('🎵 गाना बज रहा है!');
+                    }).catch(error => {
+                        console.log("Auto-play blocked:", error.message);
+                        isPlaying = false;
+                        musicBtn.innerHTML = '<i class="fas fa-volume-xmark"></i>';
+                        showToast('🎵 Music button पर click करें!');
+                    });
+                }, 300);
             } catch (error) {
                 console.log("Error:", error);
                 musicBtn.innerHTML = '<i class="fas fa-volume-xmark"></i>';
+                showToast('Music button दबाएं 🎵');
             }
         }
 
