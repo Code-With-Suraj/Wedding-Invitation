@@ -1143,35 +1143,30 @@
         
         let isPlaying = false;
 
-        // Bollywood Romantic Song - Fixed Google Drive Link
-        const musicUrl = 'https://docs.google.com/uc?export=download&id=1fVv-oLSNB178-P1OYFl8gPa8ijH-VwCW';
+        // Bollywood Romantic Song - Tum Hi Ho
+        const musicUrl = 'https://www.dropbox.com/scl/fi/n01lwma8767f861o7pii5/Tum-Hi-Ho-Aashiqui-2-Mr-Jat.in.mp3?rlkey=6q0i5oykc7yapifi6ost1cme7&st=magtzjtf&dl=1';
 
         function playMusic() {
             try {
                 bgMusic.src = musicUrl;
-                bgMusic.crossOrigin = "anonymous";
                 bgMusic.volume = 0.5;
                 bgMusic.loop = true;
                 bgMusic.load();
                 
-                // Small delay before playing
-                setTimeout(() => {
-                    bgMusic.play().then(() => {
-                        isPlaying = true;
-                        musicBtn.innerHTML = '<i class="fas fa-music is-playing"></i>';
-                        console.log("✓ Bollywood song playing!");
-                        showToast('🎵 गाना बज रहा है!');
-                    }).catch(error => {
-                        console.log("Auto-play blocked:", error.message);
-                        isPlaying = false;
-                        musicBtn.innerHTML = '<i class="fas fa-volume-xmark"></i>';
-                        showToast('🎵 Music button पर click करें!');
-                    });
-                }, 300);
+                bgMusic.play().then(() => {
+                    isPlaying = true;
+                    musicBtn.innerHTML = '<i class="fas fa-music is-playing"></i>';
+                    console.log("✓ Tum Hi Ho playing!");
+                    showToast('🎵 Tum Hi Ho बज रहा है!');
+                }).catch(error => {
+                    console.log("Click music button to play:", error.message);
+                    isPlaying = false;
+                    musicBtn.innerHTML = '<i class="fas fa-volume-xmark"></i>';
+                    showToast('🎵 Music button पर click करें!');
+                });
             } catch (error) {
                 console.log("Error:", error);
                 musicBtn.innerHTML = '<i class="fas fa-volume-xmark"></i>';
-                showToast('Music button दबाएं 🎵');
             }
         }
 
