@@ -1143,27 +1143,27 @@
         
         let isPlaying = false;
 
-        // Simple, working audio source
-        const musicUrl = 'https://www.bensound.com/bensound-music/bensound-allthat.mp3';
+        // Bollywood Romantic Song
+        const musicUrl = 'https://drive.google.com/uc?export=download&id=1fVv-oLSNB178-P1OYFl8gPa8ijH-VwCW';
 
         function playMusic() {
             try {
                 if (!bgMusic.src) {
                     bgMusic.src = musicUrl;
                 }
-                bgMusic.volume = 0.3;
+                bgMusic.volume = 0.4;
                 bgMusic.loop = true;
                 
                 bgMusic.play().then(() => {
                     isPlaying = true;
                     musicBtn.innerHTML = '<i class="fas fa-music is-playing"></i>';
-                    console.log("✓ Music started playing");
+                    console.log("✓ Bollywood song playing!");
                 }).catch(error => {
                     console.log("Auto-play blocked:", error.message);
                     isPlaying = false;
                     musicBtn.innerHTML = '<i class="fas fa-volume-xmark"></i>';
                     // Show user they need to click to play
-                    showToast('Click the music button to play 🎵');
+                    showToast('🎵 Music button पर click करें!');
                 });
             } catch (error) {
                 console.log("Error:", error);
