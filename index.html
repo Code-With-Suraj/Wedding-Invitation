@@ -1143,56 +1143,56 @@
         
         let isPlaying = false;
 
-        // Music sources
-        const songs = [
-            'https://cdn.pixabay.com/audio/2022/03/10/audio_4c3733d8ec.mp3',
-            'https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3',
-            'https://cdn.pixabay.com/audio/2022/03/15/audio_c8c6e7a149.mp3',
-            'https://cdn.pixabay.com/audio/2021/08/04/audio_12b0c7443c.mp3'
-        ];
-        let currentSongIndex = 0;
+        // Simple, working audio source
+        const musicUrl = 'https://www.bensound.com/bensound-music/bensound-allthat.mp3';
 
         function playMusic() {
-            if (!bgMusic.src || bgMusic.src !== songs[currentSongIndex]) {
-                bgMusic.src = songs[currentSongIndex];
-                bgMusic.load();
-            }
-            bgMusic.volume = 0.4;
-            const playPromise = bgMusic.play();
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
+            try {
+                if (!bgMusic.src) {
+                    bgMusic.src = musicUrl;
+                }
+                bgMusic.volume = 0.3;
+                bgMusic.loop = true;
+                
+                bgMusic.play().then(() => {
                     isPlaying = true;
                     musicBtn.innerHTML = '<i class="fas fa-music is-playing"></i>';
+                    console.log("✓ Music started playing");
                 }).catch(error => {
-                    console.log("Playback failed:", error);
+                    console.log("Auto-play blocked:", error.message);
                     isPlaying = false;
-                    musicBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-                    setTimeout(() => {
-                        bgMusic.play().catch(e => console.log("Retry failed:", e));
-                    }, 1000);
+                    musicBtn.innerHTML = '<i class="fas fa-volume-xmark"></i>';
+                    // Show user they need to click to play
+                    showToast('Click the music button to play 🎵');
                 });
+            } catch (error) {
+                console.log("Error:", error);
+                musicBtn.innerHTML = '<i class="fas fa-volume-xmark"></i>';
             }
         }
 
         function pauseMusic() {
             bgMusic.pause();
             isPlaying = false;
-            musicBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+            musicBtn.innerHTML = '<i class="fas fa-volume-xmark"></i>';
         }
 
-        function playNextSong() {
-            currentSongIndex = (currentSongIndex + 1) % songs.length;
+        bgMusic.addEventListener('ended', () => {
+            // Loop the same song
+            bgMusic.currentTime = 0;
             playMusic();
-        }
-
-        bgMusic.addEventListener('ended', playNextSong);
+        });
 
         // Open invitation
         openButton.addEventListener('click', () => {
             coverScreen.classList.add('fade-out');
             mainContent.style.display = 'block';
             
-            playMusic();
+            // Try to play music
+            setTimeout(() => {
+                playMusic();
+            }, 500);
+            
             musicBtn.style.opacity = '1';
             
             const shareLink = document.getElementById('whatsapp-share');
@@ -1204,7 +1204,7 @@
             }, 2000);
         });
 
-        // Music button toggle
+        // Music button toggle - Most important for user control
         musicBtn.addEventListener('click', () => {
             if (isPlaying) {
                 pauseMusic();
