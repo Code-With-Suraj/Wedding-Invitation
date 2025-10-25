@@ -576,16 +576,12 @@
         
         let isPlaying = false;
         
-        // --- UPDATED BOLLYWOOD SONGS LIST ---
+        // --- STABLE ROMANTIC SONGS LIST (FIXED) ---
         const songs = [
-            'https://cdnsongs.com/music/data/Hindi/2022/Brahmastra/128/Kesariya.mp3', // Kesariya
-            'https://cdnsongs.com/music/data/Hindi/2021/Shershaah/128/Ranjha.mp3', // Ranjha
-            'https://cdnsongs.com/music/data/Hindi/2021/Shershaah/128/Raataan_Lambiyan.mp3', // Raataan Lambiyan
-            'https://cdnsongs.com/music/data/Hindi/2013/Yeh_Jawaani_Hai_Deewani/128/Kabira_Encore.mp3', // Kabira (Encore)
-            'https://cdnsongs.com/music/data/Hindi/201609/Sanam_Re/128/Din_Shagna_Da.mp3', // Din Shagna Da
-            'https://cdnsongs.com/music/data/Hindi/201404/2_States/128/Mast_Magan.mp3', // Mast Magan
-            'https://cdnsongs.com/music/data/Hindi/2019/Kabir_Singh/128/Tera_Ban_Jaunga.mp3', // Tera Ban Jaunga
-            'https://cdnsongs.com/music/data/Hindi/2016/Airlift/128/Soch_Na_Sake.mp3' // Soch Na Sake
+            'https://www.bensound.com/bensound-music/bensound-romance.mp3',
+            'https://www.bensound.com/bensound-music/bensound-memories.mp3',
+            'https://www.bensound.com/bensound-music/bensound-tenderness.mp3',
+            'https://www.bensound.com/bensound-music/bensound-betterdays.mp3'
         ];
         let currentSongIndex = 0;
 
@@ -723,7 +719,7 @@
                 startTime: "20251101T133000Z", // Corresponds to 7:00 PM IST (GMT+5:30)
                 endTime: "20251101T183000Z" // Corresponds to 12:00 AM IST (GMT+5:30) next day, but keeping it simple for 5 hours.
             };
-            const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nURL:${document.URL}\nDTSTART:${event.startTime}\nDTEND:${event.endTime}\nSUMMARY:${event.title}\nDESCRIPTION:${event.description}\nLOCATION:${event.location}\nEND:VEVENT\nEND:VCALNDAR`;
+            const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nURL:${document.URL}\nDTSTART:${event.startTime}\nDTEND:${event.endTime}\nSUMMARY:${event.title}\nDESCRIPTION:${event.description}\nLOCATION:${event.location}\nEND:VEVENT\nEND:VCALENDAR`;
             const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
